@@ -6,10 +6,10 @@ As carbon dioxide (CO<sub>2</sub>) concentration into the amosphere is increasin
 
 ## Objectives
 
-The goals of this work are:
-    - **To characterize the fluxes origin depending on different periods**  
-    - **To determine the contribution of certain areas (road, wetland, ...) to the measured CO<sub>2</sub>**  
-    - **To facilitate the comparison with other models, in particular hydrological**  
+The goals of this work are:  
+- **To characterize the fluxes origin depending on different periods**  
+- **To determine the contribution of certain areas (road, wetland, ...) to the measured CO<sub>2</sub>**  
+- **To facilitate the comparison with other models, in particular hydrological**  
 
 ---
 
@@ -22,7 +22,6 @@ The goals of this work are:
 ### 5. Plot the footprint
 ### 6. Reproject the footprint onto another grid
 ### 7. Save in daily netCDF files for further work
-
 
 ## Contributors 
 ...

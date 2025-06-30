@@ -1,0 +1,25 @@
+name: env-ICOS
+channels:
+  - conda-forge
+dependencies:
+  - ipykernel
+  - xarray
+  - ca-certificates
+  - openssl
+  - cartopy
+  - astral
+  - certifi
+  - scipy
+  - folium
+  - windrose
+  - pillow
+  - geopandas
+  - contextily
+  - watermark
+  - statsmodels
+  - netcdf4
+  - seaborn
+  - rioxarray
+  - xesmf
+  - tqdm
+prefix: /home/jovyan/my-conda-envs/env-ICOS
