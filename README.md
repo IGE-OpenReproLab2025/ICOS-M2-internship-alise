@@ -23,12 +23,17 @@ The goals of this work are:
 ### 6. Reproject the footprint onto another grid
 ### 7. Save in daily netCDF files for further work
 
+---
+
 ## Contributors 
 ...
 
+---
+
 ## License and accessibility
 
-The code is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+The code and this repository are licensed under the MIT License. See the [MIT_LICENSE](MIT_LICENSE) file for details.  
+This project uses the footprint model by Kljun et al. (2015), which is licensed under the ISC License. See [ISC_MODEL_LICENSE](ISC_MODEL_LICENSE) for details.
 
 ---
 
