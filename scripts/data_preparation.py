@@ -9,7 +9,7 @@ from pytz import timezone
 
 def read_csv_file(path, *args, **kwargs):
     """
-    Read data from a file
+    Read data from a csv file
 
     Inputs:
         path (str with glob characters) : Path to the files
@@ -17,7 +17,7 @@ def read_csv_file(path, *args, **kwargs):
         **kwargs: Additional keyword arguments to pass to the read function.
             
     Outputs:
-        Data read from the file.
+        List of the data read from the files, sorted by year
     """
     files = glob.glob(path)
     
