@@ -82,7 +82,7 @@ def is_night(timestamp):
     Returns True if the time input is during the night
 
     Inputs:
-        timestamp : Datetime column
+        timestamp : Datetime column with format "%Y%m%d%H%M"
 
     Output:
         "Night" column with True for nighttime and False for daytime
@@ -102,7 +102,7 @@ def detect_phase(df, ndvi_col='NDVI_smoothed', diff_thresh=0.003, ndvi_thresh=0.
     Calculate the derivative and detect the vegetation different phases (growth, decline, stagnation, snow)
 
     Inputs:
-        df : Dataframe with NDVI values
+        df : Dataframe with smoothed NDVI values
 
     Outputs:
         Dataframe with raw phases and smoothed phases ('phase_label')

@@ -12,7 +12,7 @@ import xarray as xr
 
 def extract_FFP_inputs(df) :
     """
-    Extract the columns needed for footprint calculation (adapated to Lautaret ICOS station)
+    Extract the columns needed for footprint calculation (adapted to the Lautaret ICOS station)
 
     Inputs: Dataframe containing the required columns
 
@@ -30,11 +30,11 @@ def extract_FFP_inputs(df) :
 
 def run_FFP_90(df) :
     '''
-    Plot the footprint climatology with 10 to 90% contours
+    Plot the footprint climatology with 10 to 90% contours and 10m resolution
 
     Inputs: Dataframe containing the required columns
 
-    Ouputs: Dictionary with FFP outputs
+    Outputs: Dictionary with FFP outputs
     '''
     inputs = extract_FFP_inputs(df)
     return myfootprint_climato.FFP_climatology(
@@ -51,16 +51,16 @@ def run_FFP_90(df) :
         dy=10,
         rs=[10,20,30,40,50,60,70,80,90],
         verbosity=0,
-        fig=1
+        fig=0
     )
 
 def run_FFP_nc(df) :
     '''
-    Plot the footprint climatology with 10 to 80% contours
+    Plot the footprint climatology with 10 to 80% contours and 2.5m resolution
 
     Inputs: Dataframe containing the required columns
 
-    Ouputs: Dictionary with FFP outputs
+    Ouputs: Dictionary with FFP outputs (suitable for netCDF conversion)
     '''
     inputs = extract_FFP_inputs(df)
     return myfootprint_climato.FFP_climatology(
@@ -215,11 +215,11 @@ def contours_to_gdf(contours_dict, crs="EPSG:4326"):
     
 def FFPdict_to_nc(footprint, attrs={}):
     '''
-    Convert a footprint climatology dictionary into a netCDF file
+    Convert a footprint climatology dictionary into a xarray Dataset to save in a netCDF file
 
     Inputs : footprint : Footprint climatology dictionary
 
-    Ouputs : A netCDF file with global and variable attributes and 2d grid + footprint values
+    Outputs : A xarray Dataset with global and variable attributes and 2d grid + footprint values
     '''
     fp_value = footprint['fclim_2d']
     x_2d = footprint['x_2d']
@@ -270,11 +270,11 @@ def FFPdict_to_nc(footprint, attrs={}):
 
 def data_to_footprint_nc(flux_NDVI_data, attrs={}):
     '''
-    Convert a dataframe containing the required columns for footprint calculation into a netCDF file with all the footprint values for each timestamp
+    Convert a dataframe containing the required columns for footprint calculation into a xarray Datatset with all the footprint values for each timestamp
 
     Inputs : flux_NDVI_data : Dataframe with required columns for footprint calculation + NDVI phases + Night info
 
-    Ouputs : A netCDF file (ready to be saved) with footprint values on a x/y grid, for each timestamp and the characteristics of timestamps (night or day-time/vegetation phase)
+    Outputs : A xarray Dataset (ready to be saved in netCDF) with footprint values on a x/y grid, for each timestamp and the characteristics of timestamps (night or day-time/vegetation phase)
     '''
     # For every lign of flux_NDVI dataframe
     footprints = []
@@ -378,13 +378,13 @@ def data_to_footprint_nc(flux_NDVI_data, attrs={}):
 
 def data_to_daily_nc(flux_NDVI_data, output_path):
     '''
-    Convert a dataframe containing the required columns for footprint calculation into netCDF files for each day
+    Convert a dataframe containing the required columns for footprint calculation into a netCDF file for each day
 
     Inputs : 
         flux_NDVI_data : Dataframe with required columns for footprint calculation + NDVI phases + Night info
         output_path : path to store the netCDF files
 
-    Ouputs : Save a netCDF file for each day with footprint values on a x/y grid, for each timestamp and the characteristics of timestamps (night or day-time/vegetation phase)
+    Outputs : Save a netCDF file for each day with footprint values on a x/y grid, for each timestamp and the characteristics of timestamps (night or day-time/vegetation phase)
     '''
     flux_NDVI_data['TIMESTAMP_DATE'] = pd.to_datetime(flux_NDVI_data['TIMESTAMP_START']).values.astype('datetime64[D]')
     unique_dates = flux_NDVI_data['TIMESTAMP_DATE'].drop_duplicates()
