@@ -2,6 +2,10 @@
 
 As carbon dioxide (CO<sub>2</sub>) concentration into the amosphere is increasing, causing global warming, it becomes essential to mitigate the negative impacts of this phenomenon. Acting as natural carbon sinks, grasslands sequester up to 300 kg of carbon per hectare per year. However, their role and long-term sustainability could be threatened by climate change, especially in the Alps where the global warming is occurring faster than elsewhere. To understand the exchanges of CO<sub>2</sub> and H<sub>2</sub>O between the ecosystem and the atmosphere, the IGE (Institute of Environmental Geosciences) supervises an ICOS-associated flux tower at Col du Lautaret (France). Installed on an alpine grassland characterized by varied plant species and topography, the main problematic is: **to what extent are the datatsets representative of the different elements and fluxes in the landscape ?** To answer this question, flux footprint models can be used to describe the spatial extent and position of the surface area that is contributing to flux measurements.
 
+### Author and contributors
+Alise ROBERT (alise.robert@univ-grenoble-alpes.fr)
+Didier VOISIN (didier.voisin@univ-grenoble-alpes.fr)
+
 ---
 
 ## Objectives
@@ -49,12 +53,12 @@ Warning : this last cell is particularly time-consuming, only run it if necessar
 ---
 
 ## Material
-...
 
----
-
-## Contributors 
-...
+- **`notebooks/`** - executable Jupyter notebook
+- **`plots`** - output plots
+- **`report/`** - context, material and bibliography of this work
+- **`scripts/`** - modules used in the notebook
+- **`utils`** - complementary module for single footprint calculation
 
 ---
 
@@ -73,3 +77,4 @@ The data and scripts are shared under open licenses that support the principles 
 ## Acknowledgments
 
 Kljun et al. (2015) for the footprint model
+Pedro Coimbra (https://github.com/pedrohenriquecoimbra/FluxPrint)
