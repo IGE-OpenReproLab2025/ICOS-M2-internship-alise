@@ -324,7 +324,7 @@ def data_to_footprint_nc(flux_NDVI_data, attrs={}):
     
     # Metadata
     data.attrs = {
-        'Title': 'Single flux footprints ICOS Lautaret (2019-2023)',
+        'Title': 'Single flux footprints for ICOS Lautaret (2019-2023)',
         'Summary': "Flux footprints integrated over 30 min from 2019 to 2023, for the ICOS associated flux tower of Col du Lautaret, France",
         'Subjects': 'Flux footprint, grassland CO2 flux, ICOS',
         'Creation_Date': '2025-06-24',

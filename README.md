@@ -43,7 +43,7 @@ This section provides an example of a footprint climatology reprojection. In the
 
 ### 7. Save in daily netCDF files for further work
 
-**The main output data of this work are daily netCDF files (`data_to_daily_nc` function). For each day, a file following CF-1.8 convention is saved with full metadata. It contains footprint values on a x/y grid, for each timestamp and the characteristics of timestamps (night or day-time/vegetation phase). An example of these netCDF files can be found in `data and plots` in this repository.   
+**The main output data of this work are daily netCDF files (`data_to_daily_nc` function). For each day, a file following CF-1.8 convention is saved with full metadata. It contains footprint values on a x/y grid, for each timestamp and the characteristics of timestamps (night or day-time/vegetation phase). An example of these netCDF files can be found in _shared storage_.   
 Warning : this last cell is particularly time-consuming, only run it if necessary**
 
 ---
