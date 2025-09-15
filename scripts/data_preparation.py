@@ -6,6 +6,9 @@ import numpy as np
 from astral import LocationInfo
 from astral.sun import sun
 from pytz import timezone
+from windrose import WindroseAxes, plot_windrose
+import seaborn as sns
+from matplotlib import pyplot as plt
 
 def read_csv_file(path, *args, **kwargs):
     """
@@ -48,11 +51,24 @@ def prep_timestamp(data_all) :
         List of dataframes with "TIMESTAMP_START" at date format
     """
     result = []
-    for data in data_all :
-        data = data.rename(columns={'TIMESTAMP START': 'TIMESTAMP_START'})
-        data['TIMESTAMP_START'] = pd.to_datetime(data['TIMESTAMP_START'], format="%Y%m%d%H%M")
+    for data in data_all:
+        # Standardize the columns
+        if "TIMESTAMP START" in data.columns:
+            data = data.rename(columns={"TIMESTAMP START": "TIMESTAMP_START"})
+
+        # Convert to datetime
+        try:
+            data["TIMESTAMP_START"] = pd.to_datetime(
+                data["TIMESTAMP_START"], format="%Y%m%d%H%M", errors="raise"
+            )
+        except (ValueError, TypeError):
+            data["TIMESTAMP_START"] = pd.to_datetime(
+                data["TIMESTAMP_START"], errors="coerce"
+            )
+
         result.append(data)
     return result
+
 
 def add_lofreqcol(df_flux, df_lofreq, columns):
     """
@@ -96,6 +112,66 @@ def is_night(timestamp):
         timestamp = london.localize(timestamp)
     s = sun(site.observer, date=timestamp.date(), tzinfo=site.timezone)
     return not (s['sunrise'] <= timestamp <= s['sunset'])
+
+def plot_windrose_subplots(data, *, direction, speed, color=None, **kwargs):
+    """Wrapper function to create subplots per axis"""
+    ax = plt.gca()
+    ax = WindroseAxes.from_ax(ax=ax)
+    plot_windrose(data[direction], data[speed], ax=ax, **kwargs)
+
+def plot_windrose_grid(data, sepcol, direction, speed, titles):
+    """
+    Plot separated windroses for different conditions
+    Inputs:
+        data : dataframe with wind characteristics and specific periods
+        sepcol : column with different conditions (ex: day/night, months...)
+        direction : wind direction column (°)
+        speed : wind speed column (m s-1)
+        titles : titles for the subplots
+
+    Output:
+        Windroses for each specific case, with legend, titles and the same axis
+    """
+    g = sns.FacetGrid(
+        data=data,
+        col=sepcol,
+        # place a maximum of 3 plots per row
+        col_wrap=3,
+        subplot_kws={"projection": "windrose"},
+        sharex=False,
+        sharey=False,
+        despine=False,
+        height=3.5,
+    )
+    
+    g.map_dataframe(
+        plot_windrose_subplots,
+        direction=direction,
+        speed=speed,
+        normed=True,
+        # manually set bins, so they match for each subplot
+        bins=(0.1, 2, 4, 6, 8),
+        calm_limit=0.1,
+        kind="bar",
+    )
+    
+    # make the subplots easier to compare, by having the same y-axis range
+    y_ticks = range(0, 17, 4)
+    for ax in g.axes:
+        ax.set_rgrids(y_ticks, y_ticks)
+    
+    g.axes[-1].set_legend(
+            title=r"$m \cdot s^{-1}$", bbox_to_anchor=(1.15, -0.1), loc="lower right"
+        )
+    
+    for ax, title in zip(g.axes.flat, titles):
+        ax.set_title(title, y=1.1)
+    
+    # adjust the spacing between the subplots
+    plt.subplots_adjust(wspace=0.1, hspace = 0.35)
+    g.fig.suptitle("Windroses for " + ", ".join(titles), fontsize=16, y=1.04, ha='right')
+              
+    return g
 
 def detect_phase(df, ndvi_col='NDVI_smoothed', diff_thresh=0.003, ndvi_thresh=0.15):
     '''
