@@ -17,6 +17,7 @@ from scipy.stats import mannwhitneyu
 from collections import Counter
 import seaborn as sns
 import calendar
+import matplotlib as mpl
 
 def extract_FFP_inputs(df) :
     """
@@ -598,6 +599,15 @@ def hist_significant(bin_significant, summary_df, direction):
     df_pw_all['Month'] = df_pw_all['Time'].dt.month
     df_pw_all['Month_name'] = df_pw_all['Month'].apply(lambda x: calendar.month_abbr[int(x)])
     df_pw_all['Year'] = df_pw_all['Time'].dt.year
+
+    mpl.rcParams.update({
+    "font.size": 12,        # taille du texte par défaut
+    "axes.titlesize": 14,   # titre des subplots
+    "axes.labelsize": 14,   # labels x et y
+    "xtick.labelsize": 12,  # ticks en x
+    "ytick.labelsize": 12,  # ticks en y
+    "legend.fontsize": 12   # légende
+    })
 
     fig, axes = plt.subplots(2, 3, figsize=(18, 10))
 
