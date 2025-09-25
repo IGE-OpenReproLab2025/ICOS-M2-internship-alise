@@ -20,7 +20,11 @@ The goals of this work are:
 
 ## Usage 
 
-Before running the notebook, the mentioned computing environment must be installed (**`environment.yml`**).  
+Before running the notebook, the mentioned computing environment must be installed (**`environment.yml`**).
+Each notebook represents one step, as depicted in the following flowchart :
+<p align="center">
+    <img src="ICOS-M2-internship-alise/data_plots/logigramme_code.drawio.png" alt="Logo">
+</p>
 
 ### 1. Data importation
 
