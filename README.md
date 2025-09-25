@@ -20,40 +20,52 @@ The goals of this work are:
 
 ## Usage 
 
-Before running the notebook, the mentioned computing environment must be installed (**`environment.yml`**).
+Before running the notebook, the mentioned computing environment must be installed (**`environment.yml`**).  
 Each notebook represents one step, as depicted in the following flowchart :
 <p align="center">
-    <img src="ICOS-M2-internship-alise/data_plots/logigramme_code.drawio.png" alt="Logo">
+    <img src="data_plots/logigramme_code.drawio.png" alt="Logo">
 </p>
 
-### 1. Data importation
+### 1. Importation and preparation of Lautaret data
 
-The **input data** is half-hourly meteorogical and fluxes variables for the Lautaret station, following ICOS standards. As some measurements are missing for footprint calculation on the ICOS data portal (https://data.icos-cp.eu/portal/), raw csv files and metadata are available on _shared storage_. 
+**Inputs**: half-hourly meteorological and fluxes variables for the Lautaret station, following ICOS standards. As some measurements are missing for footprint calculation on the ICOS data portal (https://data.icos-cp.eu/portal/), raw csv files and metadata are used :
+- 'FR-CLt_20.._Lofreq.csv' files contain half-hourly meteorological variables for each year.   
+- 'FR-CLt_20.._flux.csv' files contain half-hourly eddy covariance fluxes information.  
+The list of all the variables (code, units and description) are available on : https://docs.google.com/spreadsheets/d/1nSC75s6PU6I0Nge2MktXGMTtqob-Izsxld7t01b8Q6U/edit?gid=0#gid=0  
+- 'zsensor.csv' contains the eddy covariance sensor height (in meters) and the dates of height change.  
+- '20.._Lautaret_halfhour.csv' files are imported to get the NDVI values measured by the Skye sensor (`NDVI_skye_ref`).    
+**Outputs**: plots (windroses for Day/Night, vegetation phases based on smoothed NDVI) and a csv file `flux_NDVI.csv` with all the required variables for flux footprint calculation.
 
-### 2. Data preparation
+### 2. Calculate footprints climatologies for the different phases, with contours from 10 to 90%
 
-The variables are then selected and formatted (with functions such as `prep_timestamp`) to meet the requirements of the footprint model.
-
-### 3. Isolate certain periods
-
-The outputs of this part are the time partitioned between night and day (`is_night` function), and the vegetation phases based on the smoothed NDVI (2 graphs).
-
-### 4. Calculate footprints for the different phases, with contours from 10 to 90%
-
-Based on `calc_footprint_FFP_climatology`of Kljun et al. (2015), `run_FFP_90` allows you to calculate the footprint climatology (aggregation of footptints over several time steps) for each specific period. To plot an example figure for the footprint climatology, you can set the parameter _fig_ to 1. 
-
-### 5. Plot the footprint climatologies
-
-With `map_footprint`from `footprint_analysis.py`, it is possible to create interactive html maps with climatology and windrose. To obtain a more "classic" plot, run part 5)2).
-
-### 6. Reproject the footprint onto another grid
-
-This section provides an example of a footprint climatology reprojection. In the future, building an elaborate function will facilitate the comparison between measured and modeled data.
-
-### 7. Save in daily netCDF files for further work
-
-**The main output data of this work are daily netCDF files (`data_to_daily_nc` function). For each day, a file following CF-1.8 convention is saved with full metadata. It contains footprint values on a x/y grid, for each timestamp and the characteristics of timestamps (night or day-time/vegetation phase). An example of these netCDF files can be found in _shared storage_.   
+**Inputs**:  
+- `flux_NDVI.csv`  
+- 'MNS2m_jardin.tif' is a digital surface model (raster) containing georeferenced elevation data for the Col du Lautaret site.  
+Based on `calc_footprint_FFP_climatology`of Kljun et al. (2015), `run_FFP_90` allows you to calculate the footprint climatology (aggregation of footptints over several time steps) for each specific period. To plot an example figure for the footprint climatology, you can set the parameter _fig_ to 1.  
+**Outputs**: plots (climatologies with terrain characteristics, information on invalid timestamps), interactive html maps with climatology and windrose. **The main output data of this notebook are daily netCDF files (`data_to_daily_nc` function). For each day, a file following CF-1.8 convention is saved with full metadata. It contains footprint values on a x/y grid, for each timestamp and the characteristics of timestamps (night or day-time/vegetation phase).   
 Warning : this last cell is particularly time-consuming, only run it if necessary**
+
+### 3. Reproject the footprint onto another grid
+
+**Inputs**:  
+- `flux_NDVI.csv`  
+-  'Mask_10m_adj.tif' is a raster containing the grid of the hydrological model "Parflow" for the Charmasses watershed.  
+**Outputs**: This notebook provides an example of a footprint climatology reprojection. In the future, building an elaborate function will facilitate the comparison between measured and modeled data.
+
+### 4. Postprocessing procedure on eddy-covariance data
+
+**Inputs**:  
+- 'FR-CLt_20.._Lofreq.csv' and 'FR-CLt_20.._flux.csv' files  
+**Outputs**: a csv file `filtered_data.csv` with the filtered eddy-covariance data (Quality Check, spike detection, U* filtering).
+
+### 5. Relative contribution of the wetland to the dynamics of carbon
+
+**Inputs**:  
+- 'SURFACE_HYDROGRAPHIQUE.shp', the hydrographic surfaces georeferenced by IGN in BD TOPO for Hautes-Alpes (https://geoservices.ign.fr/telechargement-api/BDTOPO)
+-  `flux_NDVI.csv`
+-  `filtered_data.csv`
+**Outputs**: `relativecontributionZH_20_24.csv`containing the contribution of the wetland to the observed flux for each timestamp (sum of footprint values), and plots representing   
+
 
 ---
 
