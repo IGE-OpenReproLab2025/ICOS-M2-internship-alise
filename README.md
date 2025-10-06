@@ -33,7 +33,9 @@ Each notebook represents one step, as depicted in the following flowchart :
 - 'FR-CLt_20.._flux.csv' files contain half-hourly eddy covariance fluxes information.  
 The list of all the variables (code, units and description) are available on : https://docs.google.com/spreadsheets/d/1nSC75s6PU6I0Nge2MktXGMTtqob-Izsxld7t01b8Q6U/edit?gid=0#gid=0  
 - 'zsensor.csv' contains the eddy covariance sensor height (in meters) and the dates of height change.  
-- '20.._Lautaret_halfhour.csv' files are imported to get the NDVI values measured by the Skye sensor (`NDVI_skye_ref`).    
+- '20.._Lautaret_halfhour.csv' files are imported to get the NDVI values measured by the Skye sensor (`NDVI_skye_ref`).
+  
+
 **Outputs**: plots (windroses for Day/Night, vegetation phases based on smoothed NDVI) and a csv file `flux_NDVI.csv` with all the required variables for flux footprint calculation.
 
 ### 2. Calculate footprints climatologies for the different phases, with contours from 10 to 90%
@@ -42,6 +44,8 @@ The list of all the variables (code, units and description) are available on : h
 - `flux_NDVI.csv`  
 - 'MNS2m_jardin.tif' is a digital surface model (raster) containing georeferenced elevation data for the Col du Lautaret site.  
 Based on `calc_footprint_FFP_climatology`of Kljun et al. (2015), `run_FFP_90` allows you to calculate the footprint climatology (aggregation of footptints over several time steps) for each specific period. To plot an example figure for the footprint climatology, you can set the parameter _fig_ to 1.  
+
+  
 **Outputs**: plots (climatologies with terrain characteristics, information on invalid timestamps), interactive html maps with climatology and windrose. **The main output data of this notebook are daily netCDF files (`data_to_daily_nc` function). For each day, a file following CF-1.8 convention is saved with full metadata. It contains footprint values on a x/y grid, for each timestamp and the characteristics of timestamps (night or day-time/vegetation phase).   
 Warning : this last cell is particularly time-consuming, only run it if necessary**
 
@@ -49,13 +53,17 @@ Warning : this last cell is particularly time-consuming, only run it if necessar
 
 **Inputs**:  
 - `flux_NDVI.csv`  
--  'Mask_10m_adj.tif' is a raster containing the grid of the hydrological model "Parflow" for the Charmasses watershed.  
+-  'Mask_10m_adj.tif' is a raster containing the grid of the hydrological model "Parflow" for the Charmasses watershed.   
+
+  
 **Outputs**: This notebook provides an example of a footprint climatology reprojection. In the future, building an elaborate function will facilitate the comparison between measured and modeled data.
 
 ### 4. Postprocessing procedure on eddy-covariance data
 
 **Inputs**:  
 - 'FR-CLt_20.._Lofreq.csv' and 'FR-CLt_20.._flux.csv' files  
+
+  
 **Outputs**: a csv file `filtered_data.csv` with the filtered eddy-covariance data (Quality Check, spike detection, U* filtering).
 
 ### 5. Relative contribution of the wetland to the dynamics of carbon
@@ -63,18 +71,28 @@ Warning : this last cell is particularly time-consuming, only run it if necessar
 **Inputs**:  
 - 'SURFACE_HYDROGRAPHIQUE.shp', the hydrographic surfaces georeferenced by IGN in BD TOPO for Hautes-Alpes (https://geoservices.ign.fr/telechargement-api/BDTOPO)
 -  `flux_NDVI.csv`
--  `filtered_data.csv`
-**Outputs**: `relativecontributionZH_20_24.csv`containing the contribution of the wetland to the observed flux for each timestamp (sum of footprint values), and plots representing   
+-  `filtered_data.csv`  
 
+  
+**Outputs**: `relativecontributionZH_20_24.csv`file containing the contribution of the wetland to the observed flux for each timestamp (sum of footprint values) and a plot of the distribution of these values depending on specific conditions. This notebook also provides histograms showing the results of the statistical comparison between the fluxes most impacted by the wetland and the rest of the values.
+
+### 6. Station comparison and annual carbon budget
+
+**Inputs**:  
+- Meteo and flux data from the ICOS data portal (https://data.icos-cp.eu/portal/) for Lautaret, Torgnon and Alp Weissenstein  
+- '20.._Lautaret_halfhour.csv' files are imported to get the NDVI values measured by the Skye sensor (`NDVI_skye_ref`).  
+  
+**Outputs**: This code draws the average annual cycle of snow, temperature and carbon flux for the Lautaret station. Moreover, it allows to calculate and compare annual carbon budgets and the dynamics of NEE, Reco and GPP with the 2 similar stations of Torgnon and Alp Weissenstein. In addition, this notebook provides graphs of monthly values of several meteorological variables for the 3 stations. Detailed NDVI is also paralleled with some parameters, as one of the research perspectives concerns the study of vegetation kinetics. 
 
 ---
 
 ## Material
 
-- **`notebooks/`** - executable Jupyter notebook
-- **`plots/`** - output plots
-- **`report/`** - context, material and bibliography of this work
-- **`scripts/`** - modules used in the notebook
+- **`data_plots/`** - output data and plots + some figures translated in french
+- **`notebooks/`** - executable Jupyter notebooks
+- **`old_notebook/`** - first version of the code, before segmentation and addition of parts 4, 5, 6
+- **`report/`** - internship report 
+- **`scripts/`** - modules used in the notebooks
 - **`utils/`** - complementary module for single footprint calculation
 
 ---
@@ -83,7 +101,7 @@ Warning : this last cell is particularly time-consuming, only run it if necessar
 
 The code and this repository are licensed under the MIT License. See the [MIT_LICENSE](MIT_LICENSE) file for details.
 The input (csv) and output data (netCDF and figures) are licensed under a Creative Commons Attribution 4.0 International license (https://creativecommons.org/licenses/by/4.0/legalcode). 
-This project uses the footprint model by Kljun et al. (2015), which is licensed under the ISC License. See [ISC_MODEL_LICENSE](ISC_MODEL_LICENSE) for details.  
+This project uses the footprint model by Kljun et al. (2015), which is licensed under the ISC License. See [ISC_MODEL_LICENSE](ISC_MODEL_LICENSE) for details. ICOS data used as inputs is licensed under a Creative Commons Attribution 4.0 International license.
 
 The data and scripts are shared under open licenses that support the principles of open science. This ensures that others can freely access, use and build upon the material for any purpose, promoting reproducibility and collaborative research while still giving the original authors appropriate credit.  
 
@@ -94,4 +112,6 @@ The data and scripts are shared under open licenses that support the principles 
 ## Acknowledgments
 
 Kljun et al. (2015) for the footprint model  
-Pedro Coimbra (https://github.com/pedrohenriquecoimbra/FluxPrint)
+Matthias Cuntz (2009-2022) for the hesseflux library (https://github.com/mcuntz/hesseflux)  
+Pedro Coimbra (https://github.com/pedrohenriquecoimbra/FluxPrint)  
+Cremonese et al., 2025 ; Buchmann et al., 2024 ; Voisin et al., 2025 for the ICOS data
