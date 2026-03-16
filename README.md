@@ -94,6 +94,7 @@ Warning : this last cell is particularly time-consuming, only run it if necessar
 - **`report/`** - internship report 
 - **`scripts/`** - modules used in the notebooks
 - **`utils/`** - complementary module for single footprint calculation
+- **`z_extra/`** - supplementary work, to go further
 
 ---
 
